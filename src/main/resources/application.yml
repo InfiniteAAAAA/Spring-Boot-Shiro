@@ -16,6 +16,7 @@ spring:
   thymeleaf:
     cache: false
 
+
 mybatis:
   # type-aliases扫描路径
   type-aliases-package: com.infinite.pojo
