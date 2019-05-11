@@ -26,10 +26,14 @@ public class ShiroRealm extends AuthorizingRealm {
      */
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
+
+        // 获取用户输入的用户名和密码
         String userName = (String) token.getPrincipal();
         String password = new String((char[]) token.getCredentials());
 
         System.out.println("用户" + userName + "认证-----ShiroRealm.doGetAuthenticationInfo");
+
+        // 通过用户名到数据库查询用户信息
         User user = userMapper.findByUserName(userName);
 
         if (user == null) {
@@ -44,5 +48,4 @@ public class ShiroRealm extends AuthorizingRealm {
         SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(user, password, getName());
         return info;
     }
-
 }
