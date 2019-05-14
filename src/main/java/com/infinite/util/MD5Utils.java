@@ -2,6 +2,10 @@ package com.infinite.util;
 
 import org.apache.shiro.crypto.hash.SimpleHash;
 import org.apache.shiro.util.ByteSource;
+import org.springframework.util.Base64Utils;
+
+import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 
 public class MD5Utils {
     private static final String SALT = "mrbird";
@@ -21,8 +25,11 @@ public class MD5Utils {
         return newPassword;
     }
     public static void main(String[] args) {
+        String key = "Kobe Bryant";
+        byte[] keyByte = key.getBytes(StandardCharsets.UTF_8);
+        System.out.println(Base64Utils.encodeToString(keyByte));
 
-        System.out.println(MD5Utils.encrypt("test", "123456"));
+        System.out.println(MD5Utils.encrypt("Bryant", "123456"));
     }
 
 }
