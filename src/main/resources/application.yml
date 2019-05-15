@@ -13,13 +13,30 @@ spring:
       max-active: 20
       test-on-borrow: true
       driver-class-name: com.mysql.jdbc.Driver
-
+      stat-view-servlet:
+        enabled: true
+      filter:
+        stat:
+          enabled: true
+      web-stat-filter:
+        enabled: true
   thymeleaf:
     cache: false # 开发时关闭缓存,不然没法看到实时页面
     mode: LEGACYHTML5 # 用非严格的 HTML
     encoding: UTF-8
     servlet:
       content-type: text/html
+
+  redis:
+    host: localhost
+    port: 6379
+    pool:
+      max-active: 8
+      max-wait: -1
+      max-idle: 8
+      min-idle: 0
+    timeout: 0
+
 
 mybatis:
   # type-aliases扫描路径
@@ -28,4 +45,3 @@ mybatis:
   mapper-locations: com.infinite.dao./*.xml
   property:
     order: BEFORE
-     

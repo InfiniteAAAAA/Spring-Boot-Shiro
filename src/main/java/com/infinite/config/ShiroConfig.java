@@ -13,6 +13,8 @@ import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.CookieRememberMeManager;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.apache.shiro.web.servlet.SimpleCookie;
+import org.crazycake.shiro.RedisCacheManager;
+import org.crazycake.shiro.RedisManager;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -56,6 +58,7 @@ public class ShiroConfig {
         // 配置SecurityManager，并注入shiroRealm
         DefaultWebSecurityManager securityManager =  new DefaultWebSecurityManager();
         securityManager.setRememberMeManager(rememberMeManager());
+        securityManager.setCacheManager(cacheManager());
         securityManager.setRealm(shiroRealm());
         return securityManager;
     }
@@ -109,5 +112,20 @@ public class ShiroConfig {
         DefaultAdvisorAutoProxyCreator advisorAutoProxyCreator = new DefaultAdvisorAutoProxyCreator();
         advisorAutoProxyCreator.setProxyTargetClass(true);
         return advisorAutoProxyCreator;
+    }
+
+    /**
+     * 配置Redis
+     * @return
+     */
+    public RedisCacheManager cacheManager() {
+        RedisCacheManager redisCacheManager = new RedisCacheManager();
+        redisCacheManager.setRedisManager(redisManager());
+        return redisCacheManager;
+    }
+
+    public RedisManager redisManager() {
+        RedisManager redisManager = new RedisManager();
+        return redisManager;
     }
 }

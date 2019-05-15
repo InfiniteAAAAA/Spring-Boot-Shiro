@@ -55,7 +55,6 @@
             <version>1.4.1</version>
         </dependency>
 
-
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
@@ -75,10 +74,12 @@
             <artifactId>lombok</artifactId>
             <version>1.16.18</version>
         </dependency>
+
+        <!-- shiro-redis -->
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <scope>test</scope>
+            <groupId>org.crazycake</groupId>
+            <artifactId>shiro-redis</artifactId>
+            <version>2.4.2.1-RELEASE</version>
         </dependency>
 
     </dependencies>

@@ -1,7 +1,6 @@
 package com.infinite;
 
 import com.infinite.dao.UserMapper;
-import com.infinite.dao.UserPermissionMapper;
 import com.infinite.pojo.Permission;
 import com.infinite.pojo.User;
 import com.infinite.service.UserPermissionService;
