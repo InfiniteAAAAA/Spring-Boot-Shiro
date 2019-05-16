@@ -1,5 +1,6 @@
 package com.infinite.config;
 
+import at.pollux.thymeleaf.shiro.dialect.ShiroDialect;
 import com.infinite.shiro.ShiroRealm;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
@@ -167,5 +168,14 @@ public class ShiroConfig {
         EhCacheManager em = new EhCacheManager();
         em.setCacheManagerConfigFile("classpath:config/shiro-ehcache.xml");
         return em;
+    }
+
+    /**
+     * Thymeleaf中使用Shiro标签
+     * @return
+     */
+    @Bean
+    public ShiroDialect shiroDialect() {
+        return new ShiroDialect();
     }
 }

@@ -1,17 +1,51 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
 <head>
 	<meta charset="UTF-8">
 	<title>首页</title>
 </head>
 <body>
 <p>你好！[[${user.userName}]]</p>
+<p shiro:hasRole="admin">你的角色为超级管理员</p>
+<p shiro:hasRole="test">你的角色为测试账户</p>
 <h3>权限测试链接</h3>
 <div>
-	<a th:href="@{/user/list}">获取用户信息</a>
-	<a th:href="@{/user/add}">新增用户</a>
-	<a th:href="@{/user/delete}">删除用户</a>
+	<a shiro:hasPermission="user:user" th:href="@{/user/list}">获取用户信息</a>
+	<a shiro:hasPermission="user:add" th:href="@{/user/add}">新增用户</a>
+	<a shiro:hasPermission="user:delete" th:href="@{/user/delete}">删除用户</a>
 </div>
 <a th:href="@{/logout}">注销</a>
+<p shiro:anyTag>
+	Goodbye cruel World!
+</p>
+<shiro:anyTag>
+	<p>Hello World!</p>
+</shiro:anyTag>
+
+<p shiro:user="">
+	Welcome back John! Not John? Click <a href="login.html">here<a> to login.
+</p>
+<a shiro:authenticated="" href="updateAccount.html">Update your contact information</a>
+<p>Hello, <shiro:principal/>, how are you today?</p>
+<a shiro:hasRole="admin" href="admin.html">Administer the system</a>
+<p shiro:lacksRole="test">
+	Sorry, you are not allowed to administer the system.
+</p>
+<p shiro:hasAllRoles="admin,test">
+	You are a developer and a project manager.
+</p>
+<p shiro:hasAnyRoles="admin, test">
+	You are a developer, project manager, or administrator.
+</p>
+<p shiro:lacksPermission="user:delete">
+	Sorry, you are not allowed to delete user accounts.
+</p>
+<p shiro:hasAllPermissions="user:user, user:add,user:delete">
+	You can create and delete users.
+</p>
+<p shiro:hasAnyPermissions="user:add, user:delete">
+	You can create or delete users.
+</p>
 </body>
 </html>
