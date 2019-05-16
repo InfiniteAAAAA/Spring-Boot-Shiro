@@ -1,11 +1,11 @@
 package com.infinite.config;
 
+import com.infinite.shiro.ShiroRealm;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 
-import com.infinite.shiro.ShiroRealm;
-
+import org.apache.shiro.cache.ehcache.EhCacheManager;
 import org.apache.shiro.codec.Base64;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
@@ -14,14 +14,22 @@ import org.apache.shiro.web.mgt.CookieRememberMeManager;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.apache.shiro.web.servlet.SimpleCookie;
 import org.crazycake.shiro.RedisCacheManager;
-import org.crazycake.shiro.RedisManager;
+import org.crazycake.shiro.RedisSentinelManager;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.Base64Utils;
 
 @Configuration
 public class ShiroConfig {
+
+    @Value("${spring.redis.sentinel.nodes}")
+    private String redisNodes;
+    @Value("${spring.redis.sentinel.master}")
+    private String master;
+
+
     @Bean
     public ShiroFilterFactoryBean shiroFilterFactoryBean(SecurityManager securityManager) {
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
@@ -115,10 +123,10 @@ public class ShiroConfig {
     }
 
     /**
-     * 配置Redis
+     * Redis单机配置
      * @return
      */
-    public RedisCacheManager cacheManager() {
+    /*public RedisCacheManager cacheManager() {
         RedisCacheManager redisCacheManager = new RedisCacheManager();
         redisCacheManager.setRedisManager(redisManager());
         return redisCacheManager;
@@ -127,5 +135,37 @@ public class ShiroConfig {
     public RedisManager redisManager() {
         RedisManager redisManager = new RedisManager();
         return redisManager;
+    }*/
+    /**
+     * 配置shiro redisSentinelManager   哨兵模式
+     * 使用的是shiro-redis开源插件
+     * @return
+     */
+    public RedisSentinelManager redisSentinelManager(){
+        RedisSentinelManager redisSentinelManager = new RedisSentinelManager();
+        redisSentinelManager.setMasterName(master);
+        redisSentinelManager.setHost(redisNodes);
+        return redisSentinelManager;
+    }
+    /**
+     * cacheManager 缓存 redis实现
+     * 使用的是shiro-redis开源插件
+     *
+     * @return
+     */
+    public RedisCacheManager cacheManager() {
+        RedisCacheManager redisCacheManager = new RedisCacheManager();
+        redisCacheManager.setRedisManager(redisSentinelManager());
+        return redisCacheManager;
+    }
+    /**
+     * Ehcache配置
+     * @return
+     */
+    @Bean
+    public EhCacheManager getEhCacheManager() {
+        EhCacheManager em = new EhCacheManager();
+        em.setCacheManagerConfigFile("classpath:config/shiro-ehcache.xml");
+        return em;
     }
 }

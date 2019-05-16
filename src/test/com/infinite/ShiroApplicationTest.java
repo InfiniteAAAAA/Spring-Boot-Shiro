@@ -3,6 +3,7 @@ package com.infinite;
 import com.infinite.dao.UserMapper;
 import com.infinite.pojo.Permission;
 import com.infinite.pojo.User;
+import com.infinite.service.RedisService;
 import com.infinite.service.UserPermissionService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,6 +21,8 @@ public class ShiroApplicationTest {
     private UserMapper userMapper;
     @Autowired
     private UserPermissionService userPermissionService;
+    @Autowired
+    private RedisService redisService;
 
     @Test
     public void findUserByNameTest() {
@@ -33,5 +36,11 @@ public class ShiroApplicationTest {
         for (Permission permission : permissionList) {
             System.out.println(permission.getName());
         }
+    }
+
+    @Test
+    public void redisTest() {
+        redisService.set("Kobe Bryant","0824");
+        System.out.println(redisService.get("Kobe Bryant"));
     }
 }
