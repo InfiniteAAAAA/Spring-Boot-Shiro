@@ -1,0 +1,48 @@
+server:
+  servlet:
+    context-path: /web
+
+spring:
+  datasource:
+    druid:
+      url: jdbc:mysql://119.23.213.204:3306/springboot?useUnicode=true&characterEncoding=utf-8&useSSL=false
+      username: root
+      password: 123456
+      initial-size: 1
+      min-idle: 1
+      max-active: 20
+      test-on-borrow: true
+      driver-class-name: com.mysql.jdbc.Driver
+      stat-view-servlet:
+        enabled: true
+      filter:
+        stat:
+          enabled: true
+      web-stat-filter:
+        enabled: true
+  thymeleaf:
+    cache: false # 开发时关闭缓存,不然没法看到实时页面
+    mode: LEGACYHTML5 # 用非严格的 HTML
+    encoding: UTF-8
+    servlet:
+      content-type: text/html
+
+# Redis 哨兵模式
+  redis:
+    sentinel:
+      master: mymaster
+      nodes: 119.23.213.204:26379, 119.23.213.204:26380, 119.23.213.204:26381
+    lettuce:
+      pool:
+        max-active: 8
+        max-idle: 8
+        max-wait: -1ms
+        min-idle: 0
+
+mybatis:
+  # type-aliases扫描路径
+  type-aliases-package: com.infinite.pojo
+  # mapper xml实现扫描路径
+  mapper-locations: com.infinite.dao./*.xml
+  property:
+    order: BEFORE
