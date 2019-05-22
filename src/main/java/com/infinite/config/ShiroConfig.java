@@ -33,10 +33,10 @@ import org.springframework.util.Base64Utils;
 @Configuration
 public class ShiroConfig {
 
-    @Value("${spring.redis.sentinel.nodes}")
+   /* @Value("${spring.redis.sentinel.nodes}")
     private String redisNodes;
     @Value("${spring.redis.sentinel.master}")
-    private String master;
+    private String master;*/
 
 
     @Bean
@@ -152,23 +152,23 @@ public class ShiroConfig {
      * 使用的是shiro-redis开源插件
      * @return
      */
-    public RedisSentinelManager redisSentinelManager(){
+    /*public RedisSentinelManager redisSentinelManager(){
         RedisSentinelManager redisSentinelManager = new RedisSentinelManager();
         redisSentinelManager.setMasterName(master);
         redisSentinelManager.setHost(redisNodes);
         return redisSentinelManager;
-    }
+    }*/
     /**
      * cacheManager 缓存 redis实现
      * 使用的是shiro-redis开源插件
      *
      * @return
      */
-    public RedisCacheManager cacheManager() {
+    /*public RedisCacheManager cacheManager() {
         RedisCacheManager redisCacheManager = new RedisCacheManager();
         redisCacheManager.setRedisManager(redisSentinelManager());
         return redisCacheManager;
-    }
+    }*/
     /**
      * Ehcache配置
      * @return
