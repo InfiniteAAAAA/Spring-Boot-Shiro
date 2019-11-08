@@ -1,6 +1,8 @@
 package com.infinite.service.impl;
 
 import com.infinite.service.RedisService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -9,6 +11,7 @@ import java.util.concurrent.TimeUnit;
 
 @Service
 public class RedisServiceImpl implements RedisService {
+    Logger logger = LoggerFactory.getLogger(RedisServiceImpl.class);
 
     @Autowired
     private RedisTemplate redisTemplate;
@@ -19,8 +22,16 @@ public class RedisServiceImpl implements RedisService {
     }
 
     @Override
-    public void set(String key, Object value, int seconds) {
-        redisTemplate.opsForValue().set(key, value, seconds, TimeUnit.SECONDS);
+    public boolean set(String key, Object value, long seconds) {
+        boolean result = false;
+        try {
+            redisTemplate.opsForValue().set(key, value);
+            redisTemplate.expire(key, seconds, TimeUnit.SECONDS);
+            result = true;
+        } catch (Exception e) {
+            logger.error("RedisTemplateUtil.set error: ", e);
+        }
+        return result;
     }
 
     @Override

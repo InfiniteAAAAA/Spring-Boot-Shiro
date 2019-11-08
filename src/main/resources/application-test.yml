@@ -1,7 +1,7 @@
 server:
   servlet:
     context-path: /web
-
+  port: 8090
 spring:
   datasource:
     druid:
@@ -50,6 +50,8 @@ spring:
 #        max-idle: 8
 #        min-idle: 0
 #    timeout: 0
+
+
 mybatis:
   # type-aliases扫描路径
   type-aliases-package: com.infinite.pojo
@@ -57,3 +59,13 @@ mybatis:
   mapper-locations: com.infinite.dao./*.xml
   property:
     order: BEFORE
+management:
+  endpoint:
+    shutdown:
+      enabled: true
+  security:
+    enabled: false
+
+logging:
+  file: ../logs/spring-boot-shiro.log
+  level.org.springframework.web: DEBUG

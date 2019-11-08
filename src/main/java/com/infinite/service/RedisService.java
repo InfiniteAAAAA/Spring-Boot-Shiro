@@ -14,7 +14,7 @@ public interface RedisService {
      * @param value
      * @param seconds 缓存有效期
      */
-    void set(String key, Object value, int seconds);
+    boolean set(String key, Object value, long seconds);
 
     /**
      * 获取缓存

@@ -25,19 +25,16 @@ import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
 import org.crazycake.shiro.RedisCacheManager;
 import org.crazycake.shiro.RedisSentinelManager;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 import org.springframework.util.Base64Utils;
 
 @Configuration
 public class ShiroConfig {
-
-   /* @Value("${spring.redis.sentinel.nodes}")
-    private String redisNodes;
-    @Value("${spring.redis.sentinel.master}")
-    private String master;*/
-
+    @Autowired
+    private Environment environment;
 
     @Bean
     public ShiroFilterFactoryBean shiroFilterFactoryBean(SecurityManager securityManager) {
@@ -71,12 +68,12 @@ public class ShiroConfig {
     }
 
     @Bean
-    public SecurityManager securityManager(){
+    public SecurityManager securityManager(RedisCacheManager redisCacheManager){
         // 配置SecurityManager，并注入shiroRealm
         DefaultWebSecurityManager securityManager =  new DefaultWebSecurityManager();
         securityManager.setRememberMeManager(rememberMeManager());
-//        securityManager.setCacheManager(cacheManager()); //Redis缓存
-        securityManager.setCacheManager(getEhCacheManager());
+        securityManager.setCacheManager(redisCacheManager); //Redis缓存
+//        securityManager.setCacheManager(getEhCacheManager());
         securityManager.setRealm(shiroRealm());
         securityManager.setSessionManager(sessionManager());
         return securityManager;
@@ -116,23 +113,31 @@ public class ShiroConfig {
     }
 
     /**
-     * Shiro为我们提供了一些和权限相关的注解,开启这些注解的使用,需要在ShiroConfig中添加如下配置
-     * @param securityManager
+     * 配置shiro redisSentinelManager   哨兵模式
+     * 使用的是shiro-redis开源插件
      * @return
      */
     @Bean
-    public AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor(SecurityManager securityManager) {
-        AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor = new AuthorizationAttributeSourceAdvisor();
-        authorizationAttributeSourceAdvisor.setSecurityManager(securityManager);
-        return authorizationAttributeSourceAdvisor;
+    public RedisSentinelManager redisSentinelManager(){
+        RedisSentinelManager redisSentinelManager = new RedisSentinelManager();
+        String master = environment.getProperty("spring.redis.sentinel.master");
+        String redisNodes = environment.getProperty("spring.redis.sentinel.nodes");
+        redisSentinelManager.setMasterName(master);
+        redisSentinelManager.setHost(redisNodes);
+        return redisSentinelManager;
     }
+    /**
+     * cacheManager 缓存 redis实现
+     * 使用的是shiro-redis开源插件
+     *
+     * @return
+     */
     @Bean
-    public DefaultAdvisorAutoProxyCreator advisorAutoProxyCreator() {
-        DefaultAdvisorAutoProxyCreator advisorAutoProxyCreator = new DefaultAdvisorAutoProxyCreator();
-        advisorAutoProxyCreator.setProxyTargetClass(true);
-        return advisorAutoProxyCreator;
+    public RedisCacheManager redisCacheManager(RedisSentinelManager redisSentinelManager) {
+        RedisCacheManager redisCacheManager = new RedisCacheManager();
+        redisCacheManager.setRedisManager(redisSentinelManager);
+        return redisCacheManager;
     }
-
     /**
      * Redis单机配置
      * @return
@@ -147,28 +152,27 @@ public class ShiroConfig {
         RedisManager redisManager = new RedisManager();
         return redisManager;
     }*/
+
     /**
-     * 配置shiro redisSentinelManager   哨兵模式
-     * 使用的是shiro-redis开源插件
+     * Shiro为我们提供了一些和权限相关的注解,开启这些注解的使用,需要在ShiroConfig中添加如下配置
+     * @param securityManager
      * @return
      */
-    /*public RedisSentinelManager redisSentinelManager(){
-        RedisSentinelManager redisSentinelManager = new RedisSentinelManager();
-        redisSentinelManager.setMasterName(master);
-        redisSentinelManager.setHost(redisNodes);
-        return redisSentinelManager;
-    }*/
-    /**
-     * cacheManager 缓存 redis实现
-     * 使用的是shiro-redis开源插件
-     *
-     * @return
-     */
-    /*public RedisCacheManager cacheManager() {
-        RedisCacheManager redisCacheManager = new RedisCacheManager();
-        redisCacheManager.setRedisManager(redisSentinelManager());
-        return redisCacheManager;
-    }*/
+    @Bean
+    public AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor(SecurityManager securityManager) {
+        AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor = new AuthorizationAttributeSourceAdvisor();
+        authorizationAttributeSourceAdvisor.setSecurityManager(securityManager);
+        return authorizationAttributeSourceAdvisor;
+    }
+
+    @Bean
+    public DefaultAdvisorAutoProxyCreator advisorAutoProxyCreator() {
+        DefaultAdvisorAutoProxyCreator advisorAutoProxyCreator = new DefaultAdvisorAutoProxyCreator();
+        advisorAutoProxyCreator.setProxyTargetClass(true);
+        return advisorAutoProxyCreator;
+    }
+
+
     /**
      * Ehcache配置
      * @return
