@@ -69,3 +69,7 @@ management:
 logging:
   file: ../logs/spring-boot-shiro.log
   level.org.springframework.web: DEBUG
+
+createCustomer:
+  path: C:\Users\xwj\Desktop\公司\开通账号
+  fileName: 密码生成.txt
