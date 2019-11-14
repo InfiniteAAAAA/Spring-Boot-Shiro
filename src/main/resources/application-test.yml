@@ -72,4 +72,5 @@ logging:
 
 createCustomer:
   path: C:\Users\xwj\Desktop\公司\开通账号
-  fileName: 密码生成.txt
+  fileName: 新建账号.txt
+  passwordFile: 账号初始密码.txt

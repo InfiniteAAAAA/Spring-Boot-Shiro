@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <meta charset="UTF-8">
+    <title>新建账号生成sql</title>
+</head>
+<body>
+<div>
+    <form action="/web/customer/create" method="post">
+        用户id:
+        <textarea name="userIdStr" id="userIdStr" cols="20" rows="60"></textarea>
+        单位id:
+        <textarea name="agentIdStr" id="agentIdStr" cols="20" rows="60"></textarea>
+        <input type="submit" value="生成" />
+    </form>
+</div>
+</body>
+</html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <meta charset="UTF-8">
+    <title>开通账号权限生成sql</title>
+</head>
+<body>
+<div>
+    <form action="/web/customer/open" method="post"  modelAttribute="">
+        <table>
+            <tbody>
+                <tr>
+                    <td>用户id:</td>
+                    <td>
+                        <textarea name="userIdStr" id="userIdStr" cols="20" rows="20"></textarea>
+                    </td>
+                    <td>
+                        <div>
+                            <input type="checkbox" name="permission" value="13481"/>新B2B_国内散客销售
+                        </div>
+                        <div>
+                            <input type="checkbox" name="permission" value="13561"/>新B2B退票
+                        </div>
+                        <div>
+                            <input type="checkbox" name="permission" value="13622"/>新B2B变更
+                        </div>
+                        <div>
+                            <input type="checkbox" name="permission" value="13701"/>新B2B_国内散客销售报表
+                        </div>
+                        <div>
+                            <input type="checkbox" name="permission" value="13702"/>新B2B_国内退票报表
+                        </div>
+                        <div>
+                            <input type="checkbox" name="permission" value="13703"/>新B2B_国内变更报表
+                        </div>
+                        <div>
+                            <input type="checkbox" name="permission" value="13681"/>新B2B_国际需求收集
+                        </div>
+                        <div>
+                            <input type="checkbox" name="permission" value="13781"/>新B2B_国际资质认证
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <input type="submit" value="生成" />
+    </form>
+</div>
+</body>
+</html>
