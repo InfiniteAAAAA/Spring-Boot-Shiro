@@ -134,7 +134,11 @@
             <artifactId>jsoup</artifactId>
             <version>1.12.1</version>
         </dependency>
-
+        <dependency>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>build-helper-maven-plugin</artifactId>
+            <version>1.6</version>
+        </dependency>
     </dependencies>
     <repositories>
         <repository>
