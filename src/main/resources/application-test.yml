@@ -7,7 +7,7 @@ spring:
     druid:
       url: jdbc:mysql://csair.com:3306/shiro?useUnicode=true&characterEncoding=utf-8&useSSL=false
       username: root
-      password: root
+      password: 123456
       initial-size: 1
       min-idle: 1
       max-active: 20

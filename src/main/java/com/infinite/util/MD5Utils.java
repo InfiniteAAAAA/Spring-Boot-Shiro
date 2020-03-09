@@ -29,7 +29,7 @@ public class MD5Utils {
         byte[] keyByte = key.getBytes(StandardCharsets.UTF_8);
         System.out.println(Base64Utils.encodeToString(keyByte));
 
-        System.out.println(MD5Utils.encrypt("lesley", "123456"));
+        System.out.println(MD5Utils.encrypt("Kobe", "123456"));
     }
 
 }
